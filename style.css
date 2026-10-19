@@ -2278,17 +2278,17 @@ body.is-product-detail-active .footer {
 .hours-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-bottom: 24px;
+  gap: 12px;
+  margin-bottom: 0;
 }
 
 .hours-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 0;
+  padding: 12px 6px;
   border-bottom: 1px solid var(--color-border-subtle);
-  font-size: 0.95rem;
+  font-size: 0.98rem;
 }
 
 .hours-row:last-child {
@@ -2308,8 +2308,8 @@ body.is-product-detail-active .footer {
 .hours-row.is-today,
 .hours-row.highlight-sunday {
   background-color: #E8F8EE !important;
-  padding: 8px 14px !important;
-  border-radius: var(--radius-xs) !important;
+  padding: 12px 14px !important;
+  border-radius: var(--radius-sm) !important;
   border-bottom: none !important;
 }
 
@@ -2323,19 +2323,6 @@ body.is-product-detail-active .footer {
 .hours-row.highlight-sunday .time {
   font-weight: 700 !important;
   color: #0E7036 !important;
-}
-
-.hours-notice {
-  margin-top: auto;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 0.85rem;
-  color: var(--color-text-muted);
-  background-color: var(--color-off-white);
-  padding: 12px 14px;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--color-border);
 }
 
 /* ----------------- FOOTER ----------------- */

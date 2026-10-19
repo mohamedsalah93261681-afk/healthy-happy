@@ -22,7 +22,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="style.css?v=5.5">
+  <link rel="stylesheet" href="style.css?v=5.6">
 </head>
 <body>
 
@@ -334,26 +334,6 @@
                 <span class="time">09:00 – 17:00</span>
               </li>
             </ul>
-            <script>
-              (function() {
-                try {
-                  var curDay = new Date().getDay();
-                  var rows = document.querySelectorAll('.hours-row');
-                  rows.forEach(function(r) {
-                    if (parseInt(r.getAttribute('data-day'), 10) === curDay) {
-                      r.classList.add('is-today');
-                    } else {
-                      r.classList.remove('is-today');
-                    }
-                  });
-                } catch(e) {}
-              })();
-            </script>
-
-            <div class="hours-notice">
-              <span class="notice-icon">ℹ️</span>
-              <span>Venez découvrir tous nos produits directement dans notre boutique à Ariana.</span>
-            </div>
           </div>
         </div>
       </div>
