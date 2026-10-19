@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Healthy & Happy — Boutique Bio, Diététique & Bien-Être | Ariana, Tunisie</title>
+  <meta name="description" content="Healthy & Happy à Ariana, Tunisie : produits biologiques, diététiques, sans gluten, sans sucre, vitamines et compléments alimentaires. Commandes directes via WhatsApp.">
+  <meta name="keywords" content="Healthy and Happy, bio Ariana, sans gluten Tunisie, diététique Ariana, compléments alimentaires, nutrition sportive, vitamines">
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="Healthy & Happy — Épicerie Bio & Diététique Ariana">
+  <meta property="og:description" content="Manger sain, vivre mieux. Votre boutique spécialisée en produits bio, sans gluten, sans sucre et compléments à Ariana.">
+  <meta property="og:image" content="assets/logo.webp">
+  <meta property="og:type" content="website">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/webp" href="assets/logo.webp">
+
+  <!-- Google Fonts: Poppins & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css?v=5.5">
+</head>
+<body>
+
+  <!-- ================= NAVBAR ================= -->
+  <header class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="#accueil" class="nav-logo" id="nav-logo" aria-label="Healthy & Happy Accueil">
+        <img src="assets/logo.webp" alt="Healthy & Happy Logo" class="logo-img" width="160" height="52" loading="lazy" decoding="async" onerror="this.src='assets/placeholder.webp'">
+      </a>
+
+      <nav class="nav-menu" id="nav-menu" aria-label="Menu principal">
+        <ul class="nav-list">
+          <li><a href="#accueil" class="nav-link active">Accueil</a></li>
+          <li><a href="#produits" class="nav-link">Produits</a></li>
+          <li><a href="#a-propos" class="nav-link">À propos</a></li>
+          <li><a href="#avis" class="nav-link">Avis</a></li>
+          <li><a href="#contact" class="nav-link">Nous rendre visite</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="https://wa.me/21696133404" target="_blank" rel="noopener noreferrer" class="nav-whatsapp-btn" title="Contacter sur WhatsApp">
+          <svg class="icon-whatsapp-sm" viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+            <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.03 14.69 2 12.04 2M12.05 3.67C14.25 3.67 16.31 4.53 17.87 6.09C19.42 7.65 20.28 9.72 20.28 11.92C20.28 16.46 16.58 20.15 12.04 20.15C10.56 20.15 9.11 19.76 7.85 19L7.55 18.83L4.44 19.65L5.27 16.61L5.09 16.31C4.24 14.97 3.8 13.47 3.8 11.91C3.81 7.37 7.5 3.67 12.05 3.67M9.53 7.33C9.36 7.33 9.09 7.39 8.87 7.64C8.64 7.88 8 8.48 8 9.7C8 10.92 8.89 12.1 9.01 12.26C9.14 12.42 10.74 14.9 13.22 15.96C15.28 16.85 15.7 16.67 16.15 16.63C16.6 16.59 17.6 16.03 17.81 15.45C18.01 14.86 18.01 14.36 17.95 14.26C17.89 14.16 17.74 14.1 17.51 13.99C17.29 13.88 16.18 13.33 15.98 13.25C15.77 13.18 15.62 13.14 15.47 13.37C15.32 13.6 14.89 14.1 14.77 14.24C14.64 14.39 14.51 14.41 14.29 14.3C14.06 14.19 13.33 13.95 12.46 13.18C11.78 12.58 11.33 11.84 11.2 11.62C11.08 11.39 11.19 11.28 11.3 11.17C11.4 11.07 11.53 10.9 11.64 10.76C11.76 10.63 11.8 10.53 11.87 10.38C11.95 10.23 11.91 10.1 11.85 9.99C11.79 9.87 11.34 8.78 11.16 8.32C10.97 7.88 10.78 7.94 10.64 7.93C10.51 7.93 10.36 7.92 10.21 7.92C10.06 7.92 9.81 7.98 9.61 8.2C9.4 8.43 8.84 8.95 8.84 10.02"/>
+          </svg>
+          <span>96 133 404</span>
+        </a>
+
+        <button class="hamburger-btn" id="hamburger-btn" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav-menu">
+          <span class="hamburger-bar"></span>
+          <span class="hamburger-bar"></span>
+          <span class="hamburger-bar"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= VUE PRINCIPALE (CATALOGUE & SECTIONS) ================= -->
+  <main id="catalog-view" class="view-section active">
+
+    <!-- HERO SECTION (TEXTE HTML RÉEL ET FOND OFFICIEL PLEIN ÉCRAN) -->
+    <section class="hero-section" id="accueil">
+      <div class="container hero-container">
+        <div class="hero-content">
+          <h1 class="hero-title">
+            <span class="title-dark">MANGER</span><br>
+            <span class="title-lime">SAIN,</span><br>
+            <span class="title-dark">MANGER</span> <span class="title-lime">BIO</span>
+          </h1>
+
+          <p class="hero-subtitle">
+            Produits diététiques, sans gluten et<br>
+            nutrition bien-être pour une vie plus saine.
+          </p>
+
+          <div class="hero-cta-wrap">
+            <a href="#produits" class="btn-hero-yellow" id="btn-hero-discover">
+              <span>Découvrir les produits</span>
+              <span class="hero-btn-arrow">→</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION CATALOGUE DE PRODUITS -->
+    <section class="section catalog-section" id="produits">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="section-tag">Notre Catalogue</span>
+          <h2 class="section-title">Découvrez nos produits</h2>
+          <p class="section-subtitle">Une sélection de produits pour une alimentation saine et équilibrée.</p>
+        </div>
+
+        <!-- Filtres Catégories -->
+        <div class="catalog-toolbar">
+          <div class="filter-tabs" id="filter-tabs" role="tablist" aria-label="Filtrer les produits">
+            <button type="button" class="filter-tab active" data-filter="all">Tous</button>
+            <button type="button" class="filter-tab" data-filter="Sans Gluten">Sans Gluten</button>
+            <button type="button" class="filter-tab" data-filter="Compléments Alimentaires">Compléments Alimentaires</button>
+          </div>
+        </div>
+
+        <!-- Grille de produits -->
+        <div class="products-grid" id="products-grid">
+          <!-- Les produits sont injectés dynamiquement par script.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION À PROPOS -->
+    <section class="section about-section" id="a-propos">
+      <div class="container">
+        <div class="about-card">
+          <div class="about-header text-center">
+            <span class="section-tag">Notre Mission</span>
+            <h2 class="section-title">Votre bien-être, notre priorité</h2>
+            <p class="about-subtitle">
+              Située au cœur d'Ariana, <strong>Healthy & Happy</strong> est votre boutique de référence dédiée à l'alimentation diététique, aux produits biologiques et au bien-être. Nous sélectionnons avec rigueur des produits de qualité pour vous accompagner au quotidien, et notre équipe est ravie de vous accueillir en magasin pour vous conseiller personnellement.
+            </p>
+          </div>
+
+          <div class="features-grid">
+            <!-- 1. Qualité sélectionnée -->
+            <div class="feature-card">
+              <div class="feature-icon-circle">
+                <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M6 3h12l4 6-10 12L2 9l4-6z"/>
+                  <path d="M2 9h20"/>
+                  <path d="M10 3L7.5 9 12 21 16.5 9 14 3"/>
+                </svg>
+              </div>
+              <h3 class="feature-card-title">Qualité sélectionnée</h3>
+              <p class="feature-card-desc">Des produits soigneusement choisis pour leur qualité et leurs bienfaits.</p>
+            </div>
+
+            <!-- 2. Produits sans gluten -->
+            <div class="feature-card">
+              <div class="feature-icon-circle">
+                <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 22V2"/>
+                  <path d="M12 2C9.5 4 9.5 6.5 12 7.5c2.5-1 2.5-3.5 0-5.5Z"/>
+                  <path d="M12 7c-3-1-5 1.5-4 4 2.5 1 4.5-1.5 4-4Z"/>
+                  <path d="M12 7c3-1 5 1.5 4 4-2.5 1-4.5-1.5-4-4Z"/>
+                  <path d="M12 12c-3-1-5 1.5-4 4 2.5 1 4.5-1.5 4-4Z"/>
+                  <path d="M12 12c3-1 5 1.5 4 4-2.5 1-4.5-1.5-4-4Z"/>
+                </svg>
+              </div>
+              <h3 class="feature-card-title">Produits sans gluten</h3>
+              <p class="feature-card-desc">Un large choix de produits adaptés à vos besoins alimentaires.</p>
+            </div>
+
+            <!-- 3. Bien-être & nutrition -->
+            <div class="feature-card">
+              <div class="feature-icon-circle">
+                <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                </svg>
+              </div>
+              <h3 class="feature-card-title">Bien-être & nutrition</h3>
+              <p class="feature-card-desc">Des solutions pour une vie plus saine et plus équilibrée.</p>
+            </div>
+
+            <!-- 4. Conseil personnalisé -->
+            <div class="feature-card">
+              <div class="feature-icon-circle">
+                <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                  <circle cx="9" cy="7" r="4"/>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                </svg>
+              </div>
+              <h3 class="feature-card-title">Conseil personnalisé</h3>
+              <p class="feature-card-desc">Une équipe à votre écoute pour vous guider dans vos choix.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION AVIS CLIENTS -->
+    <section class="section reviews-section" id="avis">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="section-tag">Témoignages</span>
+          <h2 class="section-title">Ils nous font confiance</h2>
+          <div class="reviews-header-actions">
+            <div class="rating-badge-container">
+              <div class="stars-gold">★★★★★</div>
+              <span class="rating-text"><strong>5,0 / 5</strong> — 14 avis</span>
+            </div>
+            <a href="https://search.google.com/local/writereview?placeid=ChIJ98d3iJ_L4hIR2Yajck35cpI" target="_blank" rel="noopener noreferrer" class="btn btn-review-google-top" title="Laisser votre avis">
+              <span class="google-icon-circle">
+                <svg class="google-icon" viewBox="0 0 24 24" width="16" height="16">
+                  <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/>
+                  <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
+                  <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.98 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
+                  <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+                </svg>
+              </span>
+              <span>Laisser votre avis</span>
+              <span class="btn-arrow">→</span>
+            </a>
+            <a href="https://maps.app.goo.gl/CK7NryHWzNPW3tAg7" target="_blank" rel="noopener noreferrer" class="btn btn-view-reviews-google" title="Voir les avis Google">
+              <svg class="google-icon" viewBox="0 0 24 24" width="16" height="16">
+                <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/>
+                <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
+                <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.98 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
+                <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+              </svg>
+              <span>Voir les avis Google</span>
+              <span class="btn-arrow">↗</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="reviews-grid">
+          <!-- Avis 1 -->
+          <div class="review-card">
+            <div class="review-stars">★★★★★</div>
+            <p class="review-comment">« Meilleur qualité prix et personnel très souriant »</p>
+            <div class="reviewer-info">
+              <div class="reviewer-avatar">BL</div>
+              <div class="reviewer-meta">
+                <h4 class="reviewer-name">Bassam Lahmer</h4>
+                <span class="reviewer-status">Client vérifié</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Avis 2 -->
+          <div class="review-card">
+            <div class="review-stars">★★★★★</div>
+            <p class="review-comment">« Top boutique sans gluten »</p>
+            <div class="reviewer-info">
+              <div class="reviewer-avatar">TM</div>
+              <div class="reviewer-meta">
+                <h4 class="reviewer-name">Taher Mezzi</h4>
+                <span class="reviewer-status">Client vérifié</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Avis 3 -->
+          <div class="review-card">
+            <div class="review-stars">★★★★★</div>
+            <p class="review-comment">« Meilleure adresse pour les produits diététiques Je vous le recommande »</p>
+            <div class="reviewer-info">
+              <div class="reviewer-avatar">AM</div>
+              <div class="reviewer-meta">
+                <h4 class="reviewer-name">Ahlem Mahmoud</h4>
+                <span class="reviewer-status">Client vérifié</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION INFORMATIONS & CONTACT -->
+    <section class="section contact-section" id="contact">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="section-tag">Boutique Ariana</span>
+          <h2 class="section-title">Nous rendre visite</h2>
+          <p class="section-subtitle">Retrouvez notre localisation et nos horaires d'ouverture en magasin.</p>
+        </div>
+
+        <div class="contact-grid">
+          <!-- Colonne 1 : Carte géographique de la localisation -->
+          <div class="contact-map-card">
+            <div class="map-card-header">
+              <h3 class="card-title">Localisation</h3>
+              <a href="https://maps.app.goo.gl/CK7NryHWzNPW3tAg7" target="_blank" rel="noopener noreferrer" class="map-directions-btn" title="Ouvrir l'itinéraire dans Google Maps">
+                <span>Itinéraire Google Maps</span>
+                <span class="btn-arrow">↗</span>
+              </a>
+            </div>
+
+            <div class="map-container">
+              <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3192.833777598687!2d10.1893978!3d36.8608279!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12e2cb9f8877c7f7%3A0x9272f94d72a386d9!2shealthy%26happy!5e0!3m2!1sfr!2stn!4v1700000000000!5m2!1sfr!2stn" 
+                width="100%" 
+                height="100%" 
+                style="border:0;" 
+                allowfullscreen="" 
+                loading="lazy" 
+                referrerpolicy="no-referrer-when-downgrade" 
+                title="Carte géographique de la localisation - Healthy & Happy Ariana">
+              </iframe>
+            </div>
+          </div>
+
+          <!-- Colonne 2 : Horaires d'ouverture -->
+          <div class="contact-hours-card">
+            <div class="hours-header">
+              <h3 class="card-title">Horaires d'ouverture</h3>
+              <span class="hours-badge" id="open-status-badge">Ouvert</span>
+            </div>
+
+            <ul class="hours-list" id="hours-list">
+              <li class="hours-row is-today" data-day="1">
+                <span class="day">Lundi</span>
+                <span class="time">09:00 – 19:00</span>
+              </li>
+              <li class="hours-row" data-day="2">
+                <span class="day">Mardi</span>
+                <span class="time">09:00 – 19:00</span>
+              </li>
+              <li class="hours-row" data-day="3">
+                <span class="day">Mercredi</span>
+                <span class="time">09:00 – 19:00</span>
+              </li>
+              <li class="hours-row" data-day="4">
+                <span class="day">Jeudi</span>
+                <span class="time">09:00 – 19:00</span>
+              </li>
+              <li class="hours-row" data-day="5">
+                <span class="day">Vendredi</span>
+                <span class="time">09:00 – 19:00</span>
+              </li>
+              <li class="hours-row" data-day="6">
+                <span class="day">Samedi</span>
+                <span class="time">09:00 – 19:00</span>
+              </li>
+              <li class="hours-row" data-day="0">
+                <span class="day">Dimanche</span>
+                <span class="time">09:00 – 17:00</span>
+              </li>
+            </ul>
+            <script>
+              (function() {
+                try {
+                  var curDay = new Date().getDay();
+                  var rows = document.querySelectorAll('.hours-row');
+                  rows.forEach(function(r) {
+                    if (parseInt(r.getAttribute('data-day'), 10) === curDay) {
+                      r.classList.add('is-today');
+                    } else {
+                      r.classList.remove('is-today');
+                    }
+                  });
+                } catch(e) {}
+              })();
+            </script>
+
+            <div class="hours-notice">
+              <span class="notice-icon">ℹ️</span>
+              <span>Venez découvrir tous nos produits directement dans notre boutique à Ariana.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+
+  <!-- ================= VUE DÉTAIL PRODUIT (GÉRÉE EN JS DANS INDEX.HTML) ================= -->
+  <section id="product-detail-view" class="view-section product-detail-section" style="display: none;">
+    <div class="container">
+      
+      <!-- Bouton Retour & Fil d'Ariane -->
+      <div class="detail-navigation">
+        <button id="btn-back-to-catalog" class="btn-back" aria-label="Retour au catalogue">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+          <span>Retour au catalogue</span>
+        </button>
+
+        <nav class="breadcrumbs" aria-label="Fil d'ariane">
+          <a href="#accueil" class="bc-link bc-home">Accueil</a>
+          <span class="bc-sep">/</span>
+          <a href="#produits" class="bc-link bc-catalog">Produits</a>
+          <span class="bc-sep">/</span>
+          <span class="bc-category" id="detail-bc-category">Catégorie</span>
+          <span class="bc-sep">/</span>
+          <span class="bc-current" id="detail-bc-name">Nom du produit</span>
+        </nav>
+      </div>
+
+      <!-- Conteneur principal Fiche Produit (2 Colonnes) -->
+      <div class="product-detail-grid">
+        
+        <!-- Colonne Gauche : Galerie Photos -->
+        <div class="product-gallery">
+          <div class="main-image-box">
+            <img id="detail-main-img" src="assets/placeholder.webp" alt="Photo du produit" class="main-product-img" loading="lazy" decoding="async" onerror="this.src='assets/placeholder.webp'">
+          </div>
+          <div class="thumbnails-strip" id="detail-thumbnails-strip">
+            <!-- Miniatures générées par script.js -->
+          </div>
+        </div>
+
+        <!-- Colonne Droite : Informations & Commande -->
+        <div class="product-info-panel">
+          <div class="product-meta-header">
+            <span class="detail-category-badge" id="detail-category">Le Sans Gluten</span>
+            <span class="availability-badge available" id="detail-availability">
+              <span class="badge-icon">✓</span> Disponible en magasin
+            </span>
+          </div>
+
+          <h1 class="detail-product-title" id="detail-title">Nom du produit</h1>
+
+          <div class="detail-price-box">
+            <span class="detail-price" id="detail-price">-- DT</span>
+            <span class="detail-leaf-icon">🍃</span>
+          </div>
+
+          <!-- Sélecteur de Format (si formats multiples disponibles) -->
+          <div class="detail-format-box" id="detail-format-box" style="display: none;">
+            <label class="format-label">Choisir le format :</label>
+            <div class="format-options" id="detail-format-options">
+              <!-- Injecté dynamiquement par script.js -->
+            </div>
+          </div>
+
+          <!-- Sélecteur de Quantité & Total -->
+          <div class="purchase-box">
+            <div class="quantity-row">
+              <label class="qty-label" for="qty-display">Quantité :</label>
+              <div class="quantity-stepper">
+                <button type="button" class="stepper-btn" id="btn-qty-minus" aria-label="Diminuer la quantité">−</button>
+                <span class="stepper-val" id="qty-display">1</span>
+                <button type="button" class="stepper-btn" id="btn-qty-plus" aria-label="Augmenter la quantité">+</button>
+              </div>
+            </div>
+
+            <div class="total-price-row">
+              <span class="total-label">Total :</span>
+              <span class="total-amount" id="detail-total-amount">-- DT</span>
+            </div>
+
+            <!-- Grand Bouton Commande WhatsApp -->
+            <button type="button" class="btn btn-whatsapp-order" id="btn-whatsapp-order">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.03 14.69 2 12.04 2M12.05 3.67C14.25 3.67 16.31 4.53 17.87 6.09C19.42 7.65 20.28 9.72 20.28 11.92C20.28 16.46 16.58 20.15 12.04 20.15C10.56 20.15 9.11 19.76 7.85 19L7.55 18.83L4.44 19.65L5.27 16.61L5.09 16.31C4.24 14.97 3.8 13.47 3.8 11.91C3.81 7.37 7.5 3.67 12.05 3.67M9.53 7.33C9.36 7.33 9.09 7.39 8.87 7.64C8.64 7.88 8 8.48 8 9.7C8 10.92 8.89 12.1 9.01 12.26C9.14 12.42 10.74 14.9 13.22 15.96C15.28 16.85 15.7 16.67 16.15 16.63C16.6 16.59 17.6 16.03 17.81 15.45C18.01 14.86 18.01 14.36 17.95 14.26C17.89 14.16 17.74 14.1 17.51 13.99C17.29 13.88 16.18 13.33 15.98 13.25C15.77 13.18 15.62 13.14 15.47 13.37C15.32 13.6 14.89 14.1 14.77 14.24C14.64 14.39 14.51 14.41 14.29 14.3C14.06 14.19 13.33 13.95 12.46 13.18C11.78 12.58 11.33 11.84 11.2 11.62C11.08 11.39 11.19 11.28 11.3 11.17C11.4 11.07 11.53 10.9 11.64 10.76C11.76 10.63 11.8 10.53 11.87 10.38C11.95 10.23 11.91 10.1 11.85 9.99C11.79 9.87 11.34 8.78 11.16 8.32C10.97 7.88 10.78 7.94 10.64 7.93C10.51 7.93 10.36 7.92 10.21 7.92C10.06 7.92 9.81 7.98 9.61 8.2C9.4 8.43 8.84 8.95 8.84 10.02"/>
+              </svg>
+              <span>Commander via WhatsApp</span>
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Section Détails Exacts du Produit (Uniquement les détails fournis) -->
+      <div class="product-details-sheet">
+        <h2 class="details-sheet-title">Détails du produit</h2>
+        <div class="details-sheet-content" id="detail-description">
+          <!-- Uniquement le texte exact fourni par le client -->
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ================= FOOTER PROFESSIONNEL ================= -->
+  <footer class="footer">
+    <div class="container footer-container">
+      <div class="footer-col brand-col">
+        <div class="footer-logo">
+          <img src="assets/logo.webp" alt="Healthy & Happy" class="footer-logo-img" width="160" height="52" loading="lazy" decoding="async" onerror="this.src='assets/placeholder.webp'">
+          <span class="footer-brand-name">Healthy & Happy</span>
+        </div>
+        <p class="footer-tagline">Manger sain, vivre mieux tous les jours.</p>
+        <p class="footer-desc">
+          Votre boutique spécialisée à Ariana en produits bio, diététiques, sans gluten, sans sucre et compléments nutritionnels.
+        </p>
+      </div>
+
+      <div class="footer-col links-col">
+        <h4 class="footer-heading">Navigation</h4>
+        <ul class="footer-links">
+          <li><a href="#accueil">Accueil</a></li>
+          <li><a href="#produits">Tous nos produits</a></li>
+          <li><a href="#a-propos">À propos de nous</a></li>
+          <li><a href="#avis">Avis clients</a></li>
+          <li><a href="#contact">Nous rendre visite</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col contact-col">
+        <h4 class="footer-heading">Boutique Ariana</h4>
+        <div class="footer-social-column">
+          <a href="https://www.tiktok.com/@healthyhappy18" target="_blank" rel="noopener noreferrer" class="footer-social-link" title="Suivez-nous sur TikTok" aria-label="TikTok">
+            <svg class="footer-social-svg" viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+              <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64c.298 0 .585.04.855.118V9.32a6.34 6.34 0 0 0-1.105-.1 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 8.65 5.92 6.34 6.34 0 0 0 4.03-5.92V8.47a8.27 8.27 0 0 0 4.02 1.05V6.07a4.8 4.8 0 0 1-.85-.03z"/>
+            </svg>
+            <span>TikTok</span>
+          </a>
+          <a href="https://www.facebook.com/HEALTHYHAPPY2018/" target="_blank" rel="noopener noreferrer" class="footer-social-link" title="Suivez-nous sur Facebook" aria-label="Facebook">
+            <svg class="footer-social-svg" viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+              <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+            </svg>
+            <span>Facebook</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-col hours-col">
+        <h4 class="footer-heading">Horaires</h4>
+        <p class="footer-hours-item"><strong>Lun - Sam :</strong> 09:00 – 19:00</p>
+        <p class="footer-hours-item"><strong>Dimanche :</strong> 09:00 – 17:00</p>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="container footer-bottom-inner">
+        <p class="copyright">
+          &copy; <span id="current-year">2026</span> <strong>Healthy & Happy</strong>. Tous droits réservés.
+        </p>
+        <p class="footer-city">Ariana, Tunisie</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Script Vanilla JavaScript -->
+  <script src="script.js?v=7.4"></script>
+</body>
+</html>
