@@ -79,9 +79,7 @@ body {
   padding-top: var(--nav-height);
 }
 
-body.is-product-detail-active {
-  padding-top: 0 !important;
-}
+/* Vue détail produit */
 
 img {
   max-width: 100%;
@@ -831,8 +829,7 @@ button {
   margin-bottom: 20px;
 }
 
-/* ----------------- VUE DÉTAIL PRODUIT (PAGE DÉDIÉE COMPLÈTE SANS NAVBAR NI FOOTER) ----------------- */
-body.is-product-detail-active .navbar,
+/* ----------------- VUE DÉTAIL PRODUIT (PAGE DÉDIÉE) ----------------- */
 body.is-product-detail-active .footer {
   display: none !important;
 }
@@ -3290,6 +3287,589 @@ body.is-product-detail-active .footer {
   .products-grid {
     grid-template-columns: 1fr;
     gap: 12px;
+  }
+}
+
+/* ==========================================================================
+   MODULE E-COMMERCE PANIER (CART DRAWER, BADGE, TOAST, BUTTONS)
+   ========================================================================== */
+
+/* 1. Bouton Panier dans la Navbar */
+.nav-cart-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-green-light);
+  color: var(--color-green-dark);
+  border: 1.5px solid rgba(77, 143, 24, 0.25);
+  cursor: pointer;
+  transition: var(--transition);
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.nav-cart-btn:hover {
+  background-color: var(--color-green-primary);
+  color: var(--color-white);
+  border-color: var(--color-green-primary);
+  transform: translateY(-1px) scale(1.03);
+}
+
+.icon-cart-svg {
+  display: block;
+}
+
+/* Pastille rouge/verte du panier */
+.nav-cart-badge {
+  position: absolute;
+  top: -4px;
+  right: -5px;
+  background-color: #E11D48;
+  color: var(--color-white);
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1;
+  min-width: 19px;
+  height: 19px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  border: 2px solid var(--color-white);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.nav-cart-badge.has-items {
+  background-color: var(--color-green-primary);
+}
+
+.nav-cart-badge.bump {
+  animation: badge-bump 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes badge-bump {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.35); }
+  100% { transform: scale(1); }
+}
+
+/* 2. Bouton "Ajouter au panier 🛒" sur la vue détaillée */
+.btn-add-to-cart {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background-color: var(--color-green-primary);
+  color: var(--color-white);
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  font-weight: 700;
+  padding: 16px 24px;
+  border-radius: var(--radius-full);
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(77, 143, 24, 0.32);
+  transition: var(--transition);
+}
+
+.btn-add-to-cart:hover {
+  background-color: var(--color-green-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(20, 83, 45, 0.35);
+}
+
+.btn-add-to-cart:active {
+  transform: translateY(0);
+}
+
+.btn-add-to-cart:disabled {
+  background-color: #9E9E9E;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* 3. Overlay Sombre pour le Tiroir Panier */
+.cart-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.5);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  z-index: 100001;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.cart-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* 4. Tiroir Panier Latéral (Drawer) */
+.cart-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 440px;
+  max-width: 90vw;
+  height: 100vh;
+  height: 100dvh;
+  background-color: var(--color-white);
+  z-index: 100002;
+  box-shadow: -5px 0 35px rgba(0, 0, 0, 0.18);
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  box-sizing: border-box;
+}
+
+.cart-drawer.active {
+  transform: translateX(0);
+}
+
+/* En-tête du Panier */
+.cart-drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 22px;
+  background-color: var(--color-off-white);
+  border-bottom: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+
+.cart-header-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cart-icon-header {
+  color: var(--color-green-primary);
+}
+
+.cart-drawer-title {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--color-text-dark);
+  margin: 0;
+}
+
+.cart-items-count-badge {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-green-primary);
+}
+
+.cart-close-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-white);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.cart-close-btn:hover {
+  background-color: #FEE2E2;
+  color: #DC2626;
+  border-color: #FCA5A5;
+  transform: rotate(90deg);
+}
+
+/* Corps du Panier (Liste d'articles) */
+.cart-drawer-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background-color: var(--color-white);
+}
+
+/* État Panier Vide */
+.cart-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 100%;
+  padding: 40px 20px;
+  color: var(--color-text-muted);
+}
+
+.cart-empty-icon {
+  font-size: 3.5rem;
+  margin-bottom: 14px;
+  opacity: 0.85;
+}
+
+.cart-empty-title {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--color-text-dark);
+  margin-bottom: 6px;
+}
+
+.cart-empty-desc {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  max-width: 260px;
+  margin-bottom: 20px;
+}
+
+.btn-empty-shop {
+  background-color: var(--color-green-primary);
+  color: var(--color-white);
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 10px 20px;
+  border-radius: var(--radius-full);
+  border: none;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-empty-shop:hover {
+  background-color: var(--color-green-dark);
+}
+
+/* Fiche Article dans le Panier */
+.cart-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background-color: var(--color-off-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 12px;
+  transition: var(--transition);
+}
+
+.cart-item:hover {
+  border-color: var(--color-green-secondary);
+  box-shadow: var(--shadow-sm);
+}
+
+.cart-item-img-wrap {
+  width: 60px;
+  height: 60px;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-white);
+  border: 1px solid var(--color-border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.cart-item-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.cart-item-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.cart-item-title {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--color-text-dark);
+  line-height: 1.3;
+  margin-bottom: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cart-item-format {
+  display: inline-block;
+  font-size: 0.76rem;
+  font-weight: 500;
+  color: var(--color-green-dark);
+  background-color: var(--color-green-light);
+  padding: 2px 7px;
+  border-radius: var(--radius-xs);
+  margin-bottom: 4px;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cart-item-price-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.cart-item-unit-price {
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+}
+
+.cart-item-stepper {
+  display: inline-flex;
+  align-items: center;
+  background-color: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  height: 28px;
+}
+
+.cart-stepper-btn {
+  width: 26px;
+  height: 100%;
+  border: none;
+  background: transparent;
+  color: var(--color-text-dark);
+  font-weight: 700;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.cart-stepper-btn:hover {
+  background-color: var(--color-green-light);
+  color: var(--color-green-dark);
+}
+
+.cart-stepper-qty {
+  min-width: 24px;
+  text-align: center;
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: var(--color-text-dark);
+  user-select: none;
+}
+
+.cart-item-subtotal {
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--color-green-dark);
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+.cart-item-remove-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: none;
+  background: transparent;
+  color: #9CA3AF;
+  border-radius: var(--radius-xs);
+  cursor: pointer;
+  transition: var(--transition);
+  flex-shrink: 0;
+}
+
+.cart-item-remove-btn:hover {
+  color: #EF4444;
+  background-color: #FEE2E2;
+}
+
+/* Pied du Panier (Footer) */
+.cart-drawer-footer {
+  padding: 18px 22px;
+  background-color: var(--color-off-white);
+  border-top: 1px solid var(--color-border);
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cart-total-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cart-total-label {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--color-text-dark);
+}
+
+.cart-total-val {
+  font-family: var(--font-heading);
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: var(--color-green-dark);
+}
+
+.btn-cart-whatsapp {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background-color: var(--color-whatsapp);
+  color: var(--color-white);
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  font-weight: 700;
+  padding: 15px 20px;
+  border-radius: var(--radius-full);
+  border: none;
+  box-shadow: 0 4px 16px rgba(37, 211, 102, 0.35);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-cart-whatsapp:hover {
+  background-color: var(--color-whatsapp-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.45);
+}
+
+.btn-cart-whatsapp:active {
+  transform: translateY(0);
+}
+
+.btn-clear-cart {
+  background: none;
+  border: none;
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+  text-decoration: underline;
+  cursor: pointer;
+  align-self: center;
+  padding: 4px 8px;
+  transition: color 0.2s ease;
+}
+
+.btn-clear-cart:hover {
+  color: #DC2626;
+}
+
+/* 5. Notification Toast "Produit ajouté au panier !" */
+.cart-toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background-color: var(--color-text-dark);
+  color: var(--color-white);
+  padding: 12px 18px;
+  border-radius: var(--radius-md);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 100010;
+  transform: translateY(100px);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+  max-width: calc(100vw - 40px);
+}
+
+.cart-toast.active {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.cart-toast-icon {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background-color: var(--color-green-primary);
+  color: var(--color-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+
+.cart-toast-content {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.cart-toast-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.cart-toast-name {
+  font-size: 0.78rem;
+  color: #D1D5DB;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 220px;
+}
+
+.cart-toast-btn {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: var(--color-white);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 6px 12px;
+  border-radius: var(--radius-full);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.2s ease;
+}
+
+.cart-toast-btn:hover {
+  background-color: var(--color-green-primary);
+  border-color: var(--color-green-primary);
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  .cart-drawer {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .cart-toast {
+    bottom: 16px;
+    right: 16px;
+    left: 16px;
+    max-width: none;
+    justify-content: space-between;
   }
 }
 

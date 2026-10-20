@@ -870,7 +870,7 @@ const products = [
   "priceDisplay": "6.000 DT",
   "image": "assets/produit-89.webp",
   "available": true,
-  "details": "Réginat Petit Beurre Sans Gluten (بسكويت بالزبدة)\n\nDélicieux biscuits croquants pur beurre, élaborés selon une recette traditionnelle et garantis sans gluten.\nIdéal pour le petit-déjeuner, le goûter ou accompagné d'une boisson chaude.\n\nCaractéristiques :\n• Garanti Sans Gluten\n• Poids net : 140g\n• Marque : Réginat\n• Texture croustillante et saveur authentique de beurre"
+  "details": ""
 }
 ];
 
@@ -899,6 +899,22 @@ const DOM = {
   productDetailView: document.getElementById('product-detail-view'),
   btnBackToCatalog: document.getElementById('btn-back-to-catalog'),
   btnHeroDiscover: document.getElementById('btn-hero-discover'),
+
+  // Module Panier
+  navCartBtn: document.getElementById('nav-cart-btn'),
+  navCartBadge: document.getElementById('nav-cart-badge'),
+  cartOverlay: document.getElementById('cart-overlay'),
+  cartDrawer: document.getElementById('cart-drawer'),
+  cartDrawerCount: document.getElementById('cart-drawer-count'),
+  cartItemsContainer: document.getElementById('cart-items-container'),
+  cartTotalVal: document.getElementById('cart-total-val'),
+  btnCloseCart: document.getElementById('btn-close-cart'),
+  btnCartWhatsapp: document.getElementById('btn-cart-whatsapp'),
+  btnClearCart: document.getElementById('btn-clear-cart'),
+  btnAddToCart: document.getElementById('btn-add-to-cart'),
+  cartToast: document.getElementById('cart-toast'),
+  cartToastName: document.getElementById('cart-toast-name'),
+  btnToastViewCart: document.getElementById('btn-toast-view-cart'),
 
   // Filtres & Catalogue
   productSearch: document.getElementById('product-search'),
@@ -1241,7 +1257,8 @@ function renderCatalog() {
 /** Attache les clics sur les cartes et boutons produits */
 function attachCardEventListeners() {
   document.querySelectorAll('.product-card').forEach(card => {
-    card.addEventListener('click', () => {
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('.btn-card-quick-add')) return;
       const id = parseInt(card.getAttribute('data-id'), 10);
       showProductDetail(id, true);
     });
@@ -1272,9 +1289,8 @@ function showProductDetail(productId, updateHistory = true) {
   currentQuantity = 1;
   currentFormatIndex = 0;
 
-  // Masquer le navbar et le footer pour une page 100% dédiée au produit
+  // Activer l'état produit (la navbar reste toujours accessible avec le panier)
   document.body.classList.add('is-product-detail-active');
-  if (DOM.navbar) DOM.navbar.style.display = 'none';
   if (DOM.footer) DOM.footer.style.display = 'none';
 
   // Masquer le catalogue et afficher la page produit complète
@@ -1332,11 +1348,11 @@ function showProductDetail(productId, updateHistory = true) {
   if (prod.available) {
     DOM.detailAvailability.className = "availability-badge available";
     DOM.detailAvailability.innerHTML = '<span class="badge-icon">✓</span> Disponible en magasin';
-    DOM.btnWhatsappOrder.disabled = false;
+    if (DOM.btnAddToCart) DOM.btnAddToCart.disabled = false;
   } else {
     DOM.detailAvailability.className = "availability-badge unavailable";
     DOM.detailAvailability.innerHTML = '<span class="badge-icon">✕</span> Momentanément indisponible';
-    DOM.btnWhatsappOrder.disabled = true;
+    if (DOM.btnAddToCart) DOM.btnAddToCart.disabled = true;
   }
 
   // Affichage STRICT des détails fournis par le client (masqué si aucune description)
@@ -1459,6 +1475,331 @@ Merci de me confirmer la disponibilité et les modalités de retrait à la bouti
 }
 
 // ==========================================================================
+// 7. BIS. MODULE PANIER E-COMMERCE (LOCALSTORAGE & WHATSAPP)
+// ==========================================================================
+
+const CART_STORAGE_KEY = 'hh_cart_v1';
+let cartToastTimer = null;
+
+/** Récupère le panier depuis localStorage */
+function getCart() {
+  try {
+    const raw = localStorage.getItem(CART_STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch (err) {
+    console.error("Erreur lecture panier localStorage:", err);
+    return [];
+  }
+}
+
+/** Sauvegarde le panier dans localStorage et rafraîchit l'interface */
+function saveCart(cart) {
+  try {
+    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+  } catch (err) {
+    console.error("Erreur écriture panier localStorage:", err);
+  }
+  updateCartUI();
+}
+
+/** Ajoute un produit au panier avec quantité et format éventuel */
+function addToCart(prod, quantity = 1, format = null) {
+  if (!prod) return;
+  if (!prod.available) {
+    alert("Ce produit est momentanément indisponible.");
+    return;
+  }
+
+  const cart = getCart();
+  const formatName = format ? format.name : null;
+  const unitPrice = format ? format.price : (prod.price !== null ? prod.price : null);
+
+  // Recherche si le produit avec le même format existe déjà
+  const existingIndex = cart.findIndex(item => item.id === prod.id && item.formatName === formatName);
+
+  if (existingIndex > -1) {
+    cart[existingIndex].quantity += quantity;
+  } else {
+    cart.push({
+      id: prod.id,
+      name: prod.name,
+      category: prod.category,
+      image: prod.image,
+      formatName: formatName,
+      unitPrice: unitPrice,
+      priceDisplay: prod.priceDisplay || null,
+      quantity: quantity
+    });
+  }
+
+  saveCart(cart);
+
+  // Animation bump sur la pastille du panier
+  if (DOM.navCartBadge) {
+    DOM.navCartBadge.classList.remove('bump');
+    void DOM.navCartBadge.offsetWidth;
+    DOM.navCartBadge.classList.add('bump');
+  }
+
+  // Toast de confirmation
+  const displayName = formatName ? `${prod.name} (${formatName})` : prod.name;
+  showCartToast(displayName);
+}
+
+/** Modifie la quantité d'un article dans le panier (+1 / -1) */
+function updateCartItemQuantity(index, delta) {
+  const cart = getCart();
+  if (!cart[index]) return;
+
+  cart[index].quantity += delta;
+  if (cart[index].quantity <= 0) {
+    cart.splice(index, 1);
+  }
+
+  saveCart(cart);
+}
+
+/** Supprime définitivement un article du panier */
+function removeCartItem(index) {
+  const cart = getCart();
+  if (!cart[index]) return;
+  cart.splice(index, 1);
+  saveCart(cart);
+}
+
+/** Vide l'ensemble du panier */
+function clearCart() {
+  saveCart([]);
+}
+
+/** Affiche la discrète notification toast */
+function showCartToast(productName, customTitle = "Produit ajouté au panier !") {
+  if (!DOM.cartToast) return;
+  const titleEl = DOM.cartToast.querySelector('.cart-toast-title');
+  if (titleEl) titleEl.textContent = customTitle;
+  if (DOM.cartToastName) DOM.cartToastName.textContent = productName;
+
+  DOM.cartToast.classList.add('active');
+
+  if (cartToastTimer) clearTimeout(cartToastTimer);
+  cartToastTimer = setTimeout(() => {
+    DOM.cartToast.classList.remove('active');
+    setTimeout(() => {
+      if (titleEl) titleEl.textContent = "Produit ajouté au panier !";
+    }, 350);
+  }, 3200);
+}
+
+/** Ouvre le tiroir latéral du panier */
+function openCartDrawer() {
+  if (DOM.cartDrawer) DOM.cartDrawer.classList.add('active');
+  if (DOM.cartOverlay) DOM.cartOverlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+/** Ferme le tiroir latéral du panier */
+function closeCartDrawer() {
+  if (DOM.cartDrawer) DOM.cartDrawer.classList.remove('active');
+  if (DOM.cartOverlay) DOM.cartOverlay.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+/** Bascule l'état d'ouverture du panier */
+function toggleCartDrawer() {
+  if (DOM.cartDrawer && DOM.cartDrawer.classList.contains('active')) {
+    closeCartDrawer();
+  } else {
+    openCartDrawer();
+  }
+}
+
+/** Met à jour les éléments graphiques du panier (badge, drawer, total) */
+function updateCartUI() {
+  const cart = getCart();
+  const totalCount = cart.reduce((acc, it) => acc + (it.quantity || 0), 0);
+
+  // 1. Badge dans la Navbar
+  if (DOM.navCartBadge) {
+    DOM.navCartBadge.textContent = totalCount;
+    DOM.navCartBadge.classList.toggle('has-items', totalCount > 0);
+  }
+
+  // 2. Compteur dans le header du tiroir
+  if (DOM.cartDrawerCount) {
+    DOM.cartDrawerCount.textContent = `(${totalCount})`;
+  }
+
+  // 3. Calcul du total
+  let totalAmount = 0;
+  let hasUnconfirmed = false;
+
+  cart.forEach(item => {
+    if (item.unitPrice !== null && !isNaN(item.unitPrice)) {
+      totalAmount += (item.unitPrice * item.quantity);
+    } else {
+      hasUnconfirmed = true;
+    }
+  });
+
+  if (DOM.cartTotalVal) {
+    if (cart.length === 0) {
+      DOM.cartTotalVal.textContent = "0.000 DT";
+    } else if (hasUnconfirmed) {
+      DOM.cartTotalVal.textContent = totalAmount > 0 
+        ? `${formatPrice(totalAmount)} DT*` 
+        : "À confirmer";
+    } else {
+      DOM.cartTotalVal.textContent = `${formatPrice(totalAmount)} DT`;
+    }
+  }
+
+  // 4. Liste des articles dans le tiroir
+  if (!DOM.cartItemsContainer) return;
+
+  if (cart.length === 0) {
+    DOM.cartItemsContainer.innerHTML = `
+      <div class="cart-empty-state">
+        <div class="cart-empty-icon">🛒</div>
+        <h4 class="cart-empty-title">Votre panier est vide</h4>
+        <p class="cart-empty-desc">Ajoutez vos compléments alimentaires et produits diététiques préférés !</p>
+        <button type="button" class="btn-empty-shop" id="btn-empty-shop">Découvrir les produits</button>
+      </div>
+    `;
+
+    const emptyShopBtn = document.getElementById('btn-empty-shop');
+    if (emptyShopBtn) {
+      emptyShopBtn.addEventListener('click', () => {
+        closeCartDrawer();
+        showCatalogView(true, true);
+      });
+    }
+
+    if (DOM.btnCartWhatsapp) DOM.btnCartWhatsapp.disabled = true;
+    if (DOM.btnClearCart) DOM.btnClearCart.style.display = 'none';
+  } else {
+    if (DOM.btnCartWhatsapp) DOM.btnCartWhatsapp.disabled = false;
+    if (DOM.btnClearCart) DOM.btnClearCart.style.display = 'block';
+
+    DOM.cartItemsContainer.innerHTML = cart.map((item, idx) => {
+      const priceText = item.unitPrice !== null 
+        ? `${formatPrice(item.unitPrice)} DT` 
+        : (item.priceDisplay || "Prix à confirmer");
+
+      const subtotalText = item.unitPrice !== null 
+        ? `${formatPrice(item.unitPrice * item.quantity)} DT` 
+        : "-- DT";
+
+      const safeName = escapeHTML(item.name);
+      const safeFormat = item.formatName ? escapeHTML(item.formatName) : null;
+      const safeImg = escapeHTML(item.image || 'assets/placeholder.webp');
+
+      return `
+        <div class="cart-item" data-cart-idx="${idx}">
+          <div class="cart-item-img-wrap">
+            <img src="${safeImg}" alt="${safeName}" class="cart-item-img" loading="lazy" onerror="this.src='assets/placeholder.webp'">
+          </div>
+          <div class="cart-item-info">
+            <div class="cart-item-title" title="${safeName}">${safeName}</div>
+            ${safeFormat ? `<div class="cart-item-format">Format : ${safeFormat}</div>` : ''}
+            <div class="cart-item-price-row">
+              <span class="cart-item-unit-price">${priceText}</span>
+              <div class="cart-item-stepper">
+                <button type="button" class="cart-stepper-btn btn-cart-minus" data-idx="${idx}" aria-label="Diminuer">−</button>
+                <span class="cart-stepper-qty">${item.quantity}</span>
+                <button type="button" class="cart-stepper-btn btn-cart-plus" data-idx="${idx}" aria-label="Augmenter">+</button>
+              </div>
+              <span class="cart-item-subtotal">${subtotalText}</span>
+            </div>
+          </div>
+          <button type="button" class="cart-item-remove-btn" data-idx="${idx}" title="Supprimer cet article" aria-label="Supprimer ${safeName}">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="3 6 5 6 21 6"></polyline>
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+              <line x1="10" y1="11" x2="10" y2="17"></line>
+              <line x1="14" y1="11" x2="14" y2="17"></line>
+            </svg>
+          </button>
+        </div>
+      `;
+    }).join('');
+
+    // Écouteurs pour + / - / Corbeille
+    DOM.cartItemsContainer.querySelectorAll('.btn-cart-minus').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const idx = parseInt(btn.getAttribute('data-idx'), 10);
+        updateCartItemQuantity(idx, -1);
+      });
+    });
+
+    DOM.cartItemsContainer.querySelectorAll('.btn-cart-plus').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const idx = parseInt(btn.getAttribute('data-idx'), 10);
+        updateCartItemQuantity(idx, 1);
+      });
+    });
+
+    DOM.cartItemsContainer.querySelectorAll('.cart-item-remove-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const idx = parseInt(btn.getAttribute('data-idx'), 10);
+        removeCartItem(idx);
+      });
+    });
+  }
+}
+
+/** Envoie l'ensemble du panier dans un seul message WhatsApp */
+function sendCartWhatsAppOrder() {
+  const cart = getCart();
+  if (!cart || cart.length === 0) {
+    alert("Votre panier est vide.");
+    return;
+  }
+
+  let totalAmount = 0;
+  let hasUnconfirmed = false;
+
+  const lines = cart.map((item, idx) => {
+    let priceText;
+    if (item.unitPrice !== null && !isNaN(item.unitPrice)) {
+      const lineTotal = item.unitPrice * item.quantity;
+      totalAmount += lineTotal;
+      priceText = `${formatPrice(lineTotal)} DT`;
+    } else {
+      hasUnconfirmed = true;
+      priceText = item.priceDisplay || "Prix à confirmer";
+    }
+
+    const fmt = item.formatName ? ` (${item.formatName})` : '';
+    return `${idx + 1}. ${item.name}${fmt} (x${item.quantity}) — ${priceText}`;
+  }).join('\n');
+
+  const totalStr = hasUnconfirmed
+    ? (totalAmount > 0 ? `${formatPrice(totalAmount)} DT` : "À confirmer")
+    : `${formatPrice(totalAmount)} DT`;
+
+  const messageText = 
+`Bonjour Healthy & Happy,
+
+Je souhaite passer la commande suivante :
+
+${lines}
+
+------------------------------
+TOTAL DE LA COMMANDE : ${totalStr}
+------------------------------
+
+Merci de me confirmer la disponibilité et le retrait en boutique à Ariana !`;
+
+  const waUrl = `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(messageText)}`;
+  window.open(waUrl, '_blank', 'noopener,noreferrer');
+
+  // Vider automatiquement le panier dès la commande et fermer le tiroir
+  clearCart();
+  closeCartDrawer();
+  showCartToast("Votre panier a été réinitialisé.", "Commande transmise sur WhatsApp !");
+}
+
+// ==========================================================================
 // 8. LOGIQUE D'OUVERTURE / FERMETURE DE LA BOUTIQUE
 // ==========================================================================
 
@@ -1537,10 +1878,69 @@ function setupEventListeners() {
     }
   });
 
-  // 3. Commande WhatsApp
-  DOM.btnWhatsappOrder.addEventListener('click', handleWhatsAppOrder);
+  // 3. Bouton "Ajouter au panier 🛒" (Vue Détail)
+  if (DOM.btnAddToCart) {
+    DOM.btnAddToCart.addEventListener('click', () => {
+      if (!selectedProduct) return;
+      const fmt = getSelectedFormat();
+      addToCart(selectedProduct, currentQuantity, fmt);
+    });
+  }
 
-  // 4. Recherche de produits (si présente)
+  // 4. Commande WhatsApp directe
+  if (DOM.btnWhatsappOrder) {
+    DOM.btnWhatsappOrder.addEventListener('click', handleWhatsAppOrder);
+  }
+
+  // 5. Interactions du Tiroir Panier & Toast
+  if (DOM.navCartBtn) {
+    DOM.navCartBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleCartDrawer();
+    });
+  }
+
+  if (DOM.btnCloseCart) {
+    DOM.btnCloseCart.addEventListener('click', (e) => {
+      e.stopPropagation();
+      closeCartDrawer();
+    });
+  }
+
+  if (DOM.cartOverlay) {
+    DOM.cartOverlay.addEventListener('click', (e) => {
+      e.stopPropagation();
+      closeCartDrawer();
+    });
+  }
+
+  if (DOM.btnToastViewCart) {
+    DOM.btnToastViewCart.addEventListener('click', () => {
+      if (DOM.cartToast) DOM.cartToast.classList.remove('active');
+      openCartDrawer();
+    });
+  }
+
+  if (DOM.btnCartWhatsapp) {
+    DOM.btnCartWhatsapp.addEventListener('click', sendCartWhatsAppOrder);
+  }
+
+  if (DOM.btnClearCart) {
+    DOM.btnClearCart.addEventListener('click', () => {
+      if (confirm("Voulez-vous vider tous les articles de votre panier ?")) {
+        clearCart();
+      }
+    });
+  }
+
+  // Fermeture du panier par la touche Échap
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && DOM.cartDrawer && DOM.cartDrawer.classList.contains('active')) {
+      closeCartDrawer();
+    }
+  });
+
+  // 6. Recherche de produits (si présente)
   if (DOM.productSearch) {
     DOM.productSearch.addEventListener('input', (e) => {
       currentSearch = e.target.value;
@@ -1755,6 +2155,7 @@ function initApp() {
   setInterval(updateStoreOpenStatus, 60000);
   updateFilterCounts();
   renderCatalog();
+  updateCartUI();
   setupEventListeners();
 
   const urlParams = new URLSearchParams(window.location.search);
