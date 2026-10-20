@@ -1780,15 +1780,15 @@ function sendCartWhatsAppOrder() {
   const messageText = 
 `Bonjour Healthy & Happy,
 
-Je souhaite passer la commande suivante :
+Je souhaite passer cette commande :
 
 ${lines}
 
 ------------------------------
-TOTAL DE LA COMMANDE : ${totalStr}
+TOTAL : ${totalStr}
 ------------------------------
 
-Merci de me confirmer la disponibilité et le retrait en boutique à Ariana !`;
+Merci de me confirmer la disponibilité. Je vous préciserai si je passe en boutique à Ariana ou si je préfère une livraison. À bientôt !`;
 
   const waUrl = `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(messageText)}`;
   window.open(waUrl, '_blank', 'noopener,noreferrer');
