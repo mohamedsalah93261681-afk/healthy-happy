@@ -907,6 +907,7 @@ const DOM = {
   cartDrawer: document.getElementById('cart-drawer'),
   cartDrawerCount: document.getElementById('cart-drawer-count'),
   cartItemsContainer: document.getElementById('cart-items-container'),
+  cartDrawerFooter: document.getElementById('cart-drawer-footer'),
   cartTotalVal: document.getElementById('cart-total-val'),
   btnCloseCart: document.getElementById('btn-close-cart'),
   btnCartWhatsapp: document.getElementById('btn-cart-whatsapp'),
@@ -1657,6 +1658,8 @@ function updateCartUI() {
   if (!DOM.cartItemsContainer) return;
 
   if (cart.length === 0) {
+    if (DOM.cartDrawerFooter) DOM.cartDrawerFooter.style.display = 'none';
+
     DOM.cartItemsContainer.innerHTML = `
       <div class="cart-empty-state">
         <div class="cart-empty-icon">🛒</div>
@@ -1677,6 +1680,7 @@ function updateCartUI() {
     if (DOM.btnCartWhatsapp) DOM.btnCartWhatsapp.disabled = true;
     if (DOM.btnClearCart) DOM.btnClearCart.style.display = 'none';
   } else {
+    if (DOM.cartDrawerFooter) DOM.cartDrawerFooter.style.display = 'flex';
     if (DOM.btnCartWhatsapp) DOM.btnCartWhatsapp.disabled = false;
     if (DOM.btnClearCart) DOM.btnClearCart.style.display = 'block';
 
@@ -1701,12 +1705,12 @@ function updateCartUI() {
           <div class="cart-item-info">
             <div class="cart-item-title" title="${safeName}">${safeName}</div>
             ${safeFormat ? `<div class="cart-item-format">Format : ${safeFormat}</div>` : ''}
-            <div class="cart-item-price-row">
-              <span class="cart-item-unit-price">${priceText}</span>
+            <div class="cart-item-unit-price">${priceText}</div>
+            <div class="cart-item-actions-row">
               <div class="cart-item-stepper">
-                <button type="button" class="cart-stepper-btn btn-cart-minus" data-idx="${idx}" aria-label="Diminuer">−</button>
+                <button type="button" class="cart-stepper-btn btn-cart-minus" data-idx="${idx}" aria-label="Diminuer la quantité">−</button>
                 <span class="cart-stepper-qty">${item.quantity}</span>
-                <button type="button" class="cart-stepper-btn btn-cart-plus" data-idx="${idx}" aria-label="Augmenter">+</button>
+                <button type="button" class="cart-stepper-btn btn-cart-plus" data-idx="${idx}" aria-label="Augmenter la quantité">+</button>
               </div>
               <span class="cart-item-subtotal">${subtotalText}</span>
             </div>
